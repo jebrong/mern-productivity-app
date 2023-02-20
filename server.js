@@ -1,15 +1,18 @@
 require("dotenv").config();
 const express = require("express");
 const app = express();
-const cors = require("cors");
 const cookieParser = require("cookie-parser");
 
-app.use(
-  cors({
-    // origin: true,
-    credentials: true,
-  })
-);
+const path = require("path");
+const root = path.join(__dirname, "build");
+
+// const cors = require("cors");
+// app.use(
+//   cors({
+//     origin: true,
+//     credentials: true,
+//   })
+// );
 
 const userRouter = require("./routes/userRoutes");
 const todoRouter = require("./routes/todoRoutes");
@@ -32,27 +35,21 @@ app.use(fileUpload({ useTempFiles: true }));
 app.use(express.json());
 app.use(cookieParser());
 
-const { errorHandler } = require("./middleware/errorMiddleware");
-
 app.use(express.static("build"));
+
+const { errorHandler } = require("./middleware/errorMiddleware");
 
 app.use("/api/user", userRouter);
 app.use("/api/todo", todoRouter);
 app.use("/api/note", noteRouter);
 app.use("/api/pomodoro", pomodoroRouter);
 
-// error
-app.all("*", (req, res) => {
-  res.status(404).json({
-    message: "Page not found.",
-  });
+// for refreshes
+app.get("*", (req, res) => {
+  res.sendFile("index.html", { root });
 });
 
 app.use(errorHandler);
-
-app.get("/test", (req, res) => {
-  res.json({ test: "true" });
-});
 
 const start = async () => {
   try {
