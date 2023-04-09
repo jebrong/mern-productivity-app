@@ -2,7 +2,7 @@
 
 > This is an unguided website built with the MERN stack.It is a responsive CRUD website with authorization usingJWT and cookies.
 >
-> Live demo [_here_](https://archstud.netlify.app/).
+> Live demo [_here_](https://noterra-app.onrender.com/dashboard).
 
 ## Table of Contents
 
